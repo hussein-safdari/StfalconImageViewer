@@ -48,6 +48,7 @@ import com.stfalcon.imageviewer.common.gestures.dismiss.SwipeToDismissHandler
 import com.stfalcon.imageviewer.common.pager.MultiTouchViewPager
 import com.stfalcon.imageviewer.loader.ImageLoader
 import com.stfalcon.imageviewer.viewer.adapter.ImagesPagerAdapter
+import java.lang.Exception
 
 internal class ImageViewerView<T> @JvmOverloads constructor(
     context: Context,
@@ -151,10 +152,14 @@ internal class ImageViewerView<T> @JvmOverloads constructor(
         if (overlayView.isVisible && overlayView?.dispatchTouchEvent(event) == true) {
             return true
         }
-
-        if (transitionImageAnimator.isAnimating) {
+        try {
+            if (transitionImageAnimator.isAnimating) {
+                return true
+            }
+        }catch (e : Exception){
             return true
         }
+
 
         //one more tiny kludge to prevent single tap a one-finger zoom which is broken by the SDK
         if (wasDoubleTapped &&
